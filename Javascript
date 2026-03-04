@@ -1,0 +1,38 @@
+// Mobile menu
+const menuBtn = document.getElementById("menuBtn");
+const mobileNav = document.getElementById("mobileNav");
+
+menuBtn?.addEventListener("click", () => {
+  const expanded = menuBtn.getAttribute("aria-expanded") === "true";
+  menuBtn.setAttribute("aria-expanded", String(!expanded));
+  mobileNav.hidden = expanded;
+});
+
+// Close mobile nav after click
+mobileNav?.querySelectorAll("a").forEach(a => {
+  a.addEventListener("click", () => {
+    mobileNav.hidden = true;
+    menuBtn.setAttribute("aria-expanded", "false");
+  });
+});
+
+// Footer year
+document.getElementById("year").textContent = String(new Date().getFullYear());
+
+// Filters
+const chips = document.querySelectorAll(".chip");
+const cards = document.querySelectorAll(".card");
+
+chips.forEach(chip => {
+  chip.addEventListener("click", () => {
+    chips.forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+
+    const filter = chip.dataset.filter;
+    cards.forEach(card => {
+      const tags = (card.dataset.tags || "").split(",").map(s => s.trim());
+      const show = filter === "all" || tags.includes(filter);
+      card.style.display = show ? "flex" : "none";
+    });
+  });
+});
